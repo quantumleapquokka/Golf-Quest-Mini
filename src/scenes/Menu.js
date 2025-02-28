@@ -20,6 +20,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('select', 'select.wav')
 
         // load map backgrounds/tilemaps
+        this.load.image('tilesetImage', 'tileset.png')
+        this.load.tilemapTiledJSON('tilemapJSON', 'mapworld.json')
 
         // load other stuff
         this.load.image('menuBackground', 'main_title_screen.png')
@@ -51,7 +53,7 @@ class Menu extends Phaser.Scene {
         // this.keys.keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
 
         // skip to play/map scene for debugging 
-        // this.scene.start("mapScene")
+        this.scene.start("mapScene")
         // this.scene.start("playScene") 
 
     }
