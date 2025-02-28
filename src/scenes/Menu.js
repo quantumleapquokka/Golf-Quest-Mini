@@ -6,12 +6,20 @@ class Menu extends Phaser.Scene {
     preload() {
         this.load.path = './assets/'
 
-        // load sprites and tiles
-        
-        // load spritesheet 
+        // load sprites and spritesheets
+        this.load.spritesheet('aceMap', 'ace_map_spritesheet.png', {
+            frameWidth: 32,
+            frameHeight: 32
+        })
+        this.load.spritesheet('aceBattle', 'ace_battle_spritesheet.png', {
+            frameWidth: 32,
+            frameHeight: 64
+        })
 
         // load audio
         this.load.audio('select', 'select.wav')
+
+        // load map backgrounds/tilemaps
 
         // load other stuff
         this.load.image('menuBackground', 'main_title_screen.png')
@@ -42,7 +50,8 @@ class Menu extends Phaser.Scene {
         
         // this.keys.keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
 
-        // skip to play scene for debugging 
+        // skip to play/map scene for debugging 
+        // this.scene.start("mapScene")
         // this.scene.start("playScene") 
 
     }
