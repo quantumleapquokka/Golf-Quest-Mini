@@ -73,6 +73,11 @@ class Map extends Phaser.Scene{
             this.ace.direction = 'walk'
         }
 
+        if(!(this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown)) {
+            this.stateMachine.transition('idle')
+            return
+        }
+
         this.direction.normalize()
         this.ace.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
         this.ace.anims.play(`${this.ace.direction}`, true)
