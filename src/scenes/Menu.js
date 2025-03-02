@@ -3,30 +3,6 @@ class Menu extends Phaser.Scene {
         super("menuScene")
     }
 
-    preload() {
-        this.load.path = './assets/'
-
-        // load sprites and spritesheets
-        this.load.spritesheet('aceMap', 'ace_map_spritesheet.png', {
-            frameWidth: 32,
-            frameHeight: 32
-        })
-        this.load.spritesheet('aceBattle', 'ace_battle_spritesheet.png', {
-            frameWidth: 32,
-            frameHeight: 64
-        })
-
-        // load audio
-        this.load.audio('select', 'select.wav')
-
-        // load map backgrounds/tilemaps
-        this.load.image('tilesetImage', 'tileset.png')
-        this.load.tilemapTiledJSON('tilemapJSON', 'mapworld.json')
-
-        // load other stuff
-        this.load.image('menuBackground', 'main_title_screen.png')
-    }
-
     create() {
         // background 
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'menuBackground').setOrigin(0.5, 0.5)

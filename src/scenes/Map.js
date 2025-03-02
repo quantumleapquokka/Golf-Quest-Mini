@@ -17,7 +17,7 @@ class Map extends Phaser.Scene{
         const house = map.createLayer('house', tileset, 0, 0)
         const greenery = map.createLayer('greenery', tileset, 0, 0)
 
-        //this.cameras.main.setZoom(2)
+        this.cameras.main.setZoom(2)
         
         bgLayer.setScale(3)
         water.setScale(3)
@@ -25,28 +25,19 @@ class Map extends Phaser.Scene{
         house.setScale(3)
         greenery.setScale(3)
 
-        greenery.setCollisionByProperty({ collides: true })
-        house.setCollisionByProperty({ collides: true })
+        greenery.setCollisionByProperty({ collides: true, hole: true })
+        house.setCollisionByProperty({ collides: true, hole: true })
         waterback.setCollisionByProperty({ collides: true })
 
         // add Ace
         const aceSpawn = map.findObject('Spawns', obj => obj.name === 'aceSpawn')
         console.log(aceSpawn)
-        this.ace = this.physics.add.sprite(aceSpawn.x, aceSpawn.y, 'aceMap', 0)
-        this.ace.setScale(1.5)
-        // this.aceMap = this.physics.add.sprite(32, 32, 'aceMap', 0)
-        this.ace.body.setCollideWorldBounds(true)
-
-        // Ace walk animations
-        this.anims.create({
-            key: 'walk-down',
-            frameRate: 16,
-            repeat: -1,
-            frames: this.anims.generateFrameNumbers('aceMap', {
-                start: 0,
-                end: 1,
-            })
-        })
+        this.ace = new Ace(this, aceSpawn.x, aceSpawn.y, "aceMap", 0, "down")
+        this.add.existing(this.ace)
+        // this.ace = this.physics.add.sprite(aceSpawn.x, aceSpawn.y, 'aceMap', 0)
+        // this.ace.setScale(1.5)
+        // // this.aceMap = this.physics.add.sprite(32, 32, 'aceMap', 0)
+        // this.ace.body.setCollideWorldBounds(true)
 
         // cameras and bounds
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 3, map.heightInPixels * 3)
@@ -64,24 +55,27 @@ class Map extends Phaser.Scene{
     }
 
     update() {
+        this.ace.update()
         this.direction = new Phaser.Math.Vector2(0)
         if(this.cursors.left.isDown) {
             this.direction.x = -1
-            this.ace.play('walk-down')
+            this.ace.direction = 'walk-side'
         } else if(this.cursors.right.isDown) {
             this.direction.x = 1
-            this.ace.play('walk-down')
+            this.ace.direction = 'walk-side'
         }
 
         if(this.cursors.up.isDown) {
             this.direction.y = -1
-            this.ace.play('walk-down')
+            this.ace.direction = 'walk'
         } else if(this.cursors.down.isDown) {
             this.direction.y = 1
-            this.ace.play('walk-down')
+            this.ace.direction = 'walk'
         }
 
         this.direction.normalize()
         this.ace.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
+        this.ace.anims.play(`${this.ace.direction}`, true)
+
     }
 }
