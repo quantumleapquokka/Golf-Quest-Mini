@@ -16,6 +16,7 @@ class Map extends Phaser.Scene{
         const waterback = map.createLayer('waterback', tileset, 0, 0)
         const house = map.createLayer('house', tileset, 0, 0)
         const greenery = map.createLayer('greenery', tileset, 0, 0)
+        const holeLayer = map.createLayer('hole', tileset, 0, 0)
 
         this.cameras.main.setZoom(2)
         
@@ -24,6 +25,7 @@ class Map extends Phaser.Scene{
         waterback.setScale(3)
         house.setScale(3)
         greenery.setScale(3)
+        holeLayer.setScale(3)
 
         greenery.setCollisionByProperty({ collides: true, hole: true })
         house.setCollisionByProperty({ collides: true, hole: true })
@@ -48,6 +50,12 @@ class Map extends Phaser.Scene{
         this.physics.add.collider(this.ace, greenery)
         this.physics.add.collider(this.ace, house)
         this.physics.add.collider(this.ace, waterback)
+        this.physics.add.collider(this.ace, holeLayer)
+
+        this.physics.add.overlap(this.ace, holeLayer, () => {
+            console.log("Transitioning scene...");
+            this.scene.start("playScene");
+        })
     
         // input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -84,3 +92,4 @@ class Map extends Phaser.Scene{
 
     }
 }
+

@@ -12,9 +12,10 @@ class Load extends Phaser.Scene {
             frameHeight: 32
         })
         this.load.spritesheet('aceBattle', 'ace_battle_spritesheet.png', {
-            frameWidth: 32,
+            frameWidth: 48,
             frameHeight: 64
         })
+        this.load.image('windmill', 'windmill_boss.png')
 
         // load audio
         this.load.audio('select', 'select.wav')
@@ -22,9 +23,11 @@ class Load extends Phaser.Scene {
         // load map backgrounds/tilemaps
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'mapworld.json')
+        this.load.image('battleBg', 'boss_battle_bg.png')
+        this.load.image('menuBackground', 'main_title_screen.png')
 
         // load other stuff
-        this.load.image('menuBackground', 'main_title_screen.png')
+        
     }
 
     create(){
