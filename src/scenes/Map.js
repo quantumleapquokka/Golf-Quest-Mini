@@ -52,19 +52,38 @@ class Map extends Phaser.Scene{
         this.physics.add.collider(this.ace, waterback)
         this.physics.add.collider(this.ace, holeLayer)
 
-        this.physics.add.overlap(this.ace, holeLayer, () => {
-            console.log("Transitioning scene...");
-            this.scene.start("playScene");
-        })
-    
+        // transition to next scene if sprite is touching the golf hole 
+        holeLayer.setTileIndexCallback(901, () => {
+            // Fade out first
+            this.cameras.main.fadeOut(1000, 0, 0, 0) // 1000ms (1 second fade-out)
+
+            // Wait until the fade-out is complete, then start the scene
+            this.time.delayedCall(1000, () => {
+                this.scene.start("playScene")
+                this.cameras.main.fadeIn(2000, 0, 0, 0) // Fade in the next scene
+            })
+        }, this)
+        this.physics.add.overlap(this.ace, holeLayer, (player, layer) => {
+            // Determine the tile at the player's world position
+            let tile = holeLayer.getTileAtWorldXY(player.x, player.y);
+            // if(tile && tile.properties.hole) {
+                
+            //     console.log("Next scene")
+            //     this.scene.start("playScene")
+            // }
+        }, null, this)
+        
+        
         // input
         this.cursors = this.input.keyboard.createCursorKeys()
 
     }
 
     update() {
-        this.ace.update()
+        this.ace.update()       // update ace's movements
         this.direction = new Phaser.Math.Vector2(0)
+
+        // handle movements and animation indication for movement
         if(this.cursors.left.isDown) {
             this.direction.x = -1
             this.ace.direction = 'walk-side'
@@ -81,6 +100,7 @@ class Map extends Phaser.Scene{
             this.ace.direction = 'walk'
         }
 
+        // stop movement at 'idle' position, which is the last walk frame
         if(!(this.cursors.left.isDown || this.cursors.right.isDown || this.cursors.up.isDown || this.cursors.down.isDown)) {
             this.stateMachine.transition('idle')
             return
@@ -90,6 +110,7 @@ class Map extends Phaser.Scene{
         this.ace.setVelocity(this.VEL * this.direction.x, this.VEL * this.direction.y)
         this.ace.anims.play(`${this.ace.direction}`, true)
 
+        
     }
 }
 
