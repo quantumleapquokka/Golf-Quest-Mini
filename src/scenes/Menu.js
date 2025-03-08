@@ -1,6 +1,7 @@
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene")
+        this.keys = null
     }
 
     create() {
@@ -22,34 +23,36 @@ class Menu extends Phaser.Scene {
 
 
         // define keys
-        // this.keys = this.input.keyboard.createCursorKeys()
-        // keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
-        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
+        this.keys = this.input.keyboard.createCursorKeys()
+        this.keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+        // keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         
-        // this.keys.keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
+        this.keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
 
         // skip to play/map scene for debugging 
         // this.scene.start("mapScene")
-        this.scene.start("playScene") 
+        // this.scene.start("playScene") 
 
     }
 
     update() {
+		const keySPACE = Phaser.Input.Keyboard.JustDown(this.keys.space)
+
         // moving on from one scene to the next depending on input
-        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+        if (keySPACE) {
             this.sound.play('select')
             this.scene.start("mapScene")
         }
 
-        // if (Phaser.Input.Keyboard.JustDown(keyC)) {
-        //     this.sound.play('select')
-        //     this.scene.start("playScene")
-        // }
+        if (Phaser.Input.Keyboard.JustDown(this.keyC)) {
+            this.sound.play('select')
+            this.scene.start("creditsScene")
+        }
 
-        // if (Phaser.Input.Keyboard.JustDown(keyI)) {
-        //     this.sound.play('select')
-        //     this.scene.start("playScene")
-        // }
+        if (Phaser.Input.Keyboard.JustDown(this.keyI)) {
+            this.sound.play('select')
+            this.scene.start("instScene")
+        }
         
     }
     

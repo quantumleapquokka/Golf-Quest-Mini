@@ -19,7 +19,7 @@ class Play extends Phaser.Scene {
         // add in sprites and other assets into scene
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'battleBg').setOrigin(0.5, 0.5)
         this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
-        this.add.sprite(750, 460, 'aceBattle').setScale(3)
+        this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5)//.setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
 
@@ -69,7 +69,7 @@ class Play extends Phaser.Scene {
             this.buttonSelect.setVisible(false)
 
             // change sprite frame
-            
+            this.aceBattle.setFrame(2)
         })
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             puttButton.off('selected')
