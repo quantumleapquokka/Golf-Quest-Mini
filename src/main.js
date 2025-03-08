@@ -1,6 +1,10 @@
 // Game Title: Golf Quest Mini
 // Name: Samantha Siew
-// Hours Spent: 
+// 
+
+
+
+
 'use strict'
 
 let config = {
@@ -16,12 +20,9 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, Menu, Map, Play, Credits ]
+    scene: [ Load, Menu, Instructions, Map, Play, Credits]
 }
 let game = new Phaser.Game(config)
-
-// Key bindings
-let keySPACE
 
 // UI sizes
 let borderUISize = game.config.height / 15
