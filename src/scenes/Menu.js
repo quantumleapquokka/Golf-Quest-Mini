@@ -29,8 +29,8 @@ class Menu extends Phaser.Scene {
         // this.keys.keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
 
         // skip to play/map scene for debugging 
-        this.scene.start("mapScene")
-        // this.scene.start("playScene") 
+        // this.scene.start("mapScene")
+        this.scene.start("playScene") 
 
     }
 
