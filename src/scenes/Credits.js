@@ -28,16 +28,15 @@ class Credits extends Phaser.Scene {
 
         creditsConfig.backgroundColor = '#9a6498'
         creditsConfig.color = '#000'
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 3 + borderPadding * 3, 'press [F] to go back to main menu', creditsConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 3 + borderPadding * 3, 'press [SPACE] to go back to main menu', creditsConfig).setOrigin(0.5)
         
         // define keys
-        this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
-    }
+        this.keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    }
 
     update() {
         
         
-        if (Phaser.Input.Keyboard.JustDown(this.keyF)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
             this.sound.play('select')
             this.scene.start("menuScene")
         }
