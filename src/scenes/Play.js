@@ -1,4 +1,5 @@
 // Menu Selection code from: https://blog.ourcade.co/posts/2020/phaser-3-ui-menu-selection-cursor-selector/ 
+// Health bar: https://phaser.io/examples/v3.85.0/game-objects/graphics/view/health-bars-demo
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene")
@@ -21,33 +22,35 @@ class Play extends Phaser.Scene {
         this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5)//.setVisible(false)
-        this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
+        this.buttonSelect = this.add.image(0, 0, 'selector')//.setVisible(false)
+        // this.meter = this.add.image(175, 500, 'meter').setVisible(false)
+        
+        // Create hit meter
+        this.graphics = this.add.graphics()
+        this.arrow = this.add.image(100, 500, 'arrow').setScale(0.5)//.setVisible(false)
 
+        
         // create attacking menu options
         // Putt button
         const puttButton = this.add.text(175, 470, 'Putt', {
             fontSize: '32px',
             align: 'left'
-        }).setOrigin(0.5)//.setVisible(false)
+        }).setOrigin(0.5).setVisible(false)
         // Chip button
         const chipButton = this.add.text(175, 520, 'Chip', {
             fontSize: '32px',
             align: 'left',
-        }).setOrigin(0.5)//.setVisible(false)
+        }).setOrigin(0.5).setVisible(false)
         // Drive button
         const driveButton = this.add.text(175, 570, ' Drive', {
             fontSize: '32px',
             align: 'left'
-        }).setOrigin(0.5)//.setVisible(false)
+        }).setOrigin(0.5).setVisible(false)
 
 
         // delay appearance of menu for 3 seconds
         this.time.delayedCall(3000, () => {
-            this.menuBg.setVisible(true)
-            puttButton.setVisible(true)
-            chipButton.setVisible(true)
-            driveButton.setVisible(true)
-            this.buttonSelect.setVisible(true)
+            this.showMenu()
         })
 
         this.buttons.push(puttButton)
@@ -124,5 +127,47 @@ class Play extends Phaser.Scene {
     confirmSelection() {
         const button = this.buttons[this.selectedButtonIndex]   // currently selected button
         button.emit('selected')
+    }
+
+
+    stopPointer() {
+        if(this.isStopped) return
+        this.isStopped = true
+        
+        if(this.isInGreen(this.stopPointer.angle)) {
+            this.successHit()
+        } else {
+            this.failHit()
+        }
+    }
+
+    isInGreen(angle) {
+        return angle > -20 && angle < 20 
+    }
+
+    successHit() {
+        console.log("windmill hit")
+    }
+
+    failHit() {
+        console.log("windmill missed")
+    }
+
+    drawMeter() {
+        this.graphics.clear()
+
+        //
+    }
+
+    showMenu() {
+        this.menuBg.setVisible(true)
+        this.buttons.forEach(button => button.setVisible(true))
+        this.buttonSelect.setVisible(true)
+    }
+
+    hideMenu() {
+        this.menuBg.setVisible(false)
+        this.buttons.forEach(button => button.setVisible(false))
+        this.buttonSelect.setVisible(false)
     }
 }

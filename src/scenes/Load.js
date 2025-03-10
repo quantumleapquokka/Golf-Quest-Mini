@@ -29,6 +29,8 @@ class Load extends Phaser.Scene {
         // load other stuff
         this.load.image('selector', 'selector.png')
         this.load.image('menuBg', 'menu_background.png')
+        this.load.image('meter', 'meter.png')
+        this.load.image('arrow', 'arrow.png')
         
     }
 
