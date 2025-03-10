@@ -117,7 +117,7 @@ class Play extends Phaser.Scene {
 
         const button = this.buttons[index]
 
-        this.buttonSelect.x = button.x + button.displayWidth * 0.5 - 115
+        this.buttonSelect.x = 97    //button.x + button.displayWidth * 0.5 - 115
         this.buttonSelect.y = button.y
 
         this.selectedButtonIndex = index
