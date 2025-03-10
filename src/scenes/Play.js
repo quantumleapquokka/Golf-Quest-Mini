@@ -7,6 +7,9 @@ class Play extends Phaser.Scene {
         this.buttons = []
         this.selectedButtonIndex = 0
         this.buttonSelect = 0
+
+        this.currentClub = null
+        this.isStopped = false
     }
     
 
@@ -27,7 +30,7 @@ class Play extends Phaser.Scene {
         
         // Create hit meter
         this.graphics = this.add.graphics()
-        this.arrow = this.add.image(100, 500, 'arrow').setScale(0.5)//.setVisible(false)
+        this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5)//.setVisible(false)
 
         
         // create attacking menu options
@@ -63,16 +66,16 @@ class Play extends Phaser.Scene {
         // once button selected transition to actual play
         puttButton.on('selected', () => {
             console.log('putt')
-
+            this.startMeter('putt')
             // make everything invisible again
-            this.menuBg.setVisible(false)
-            puttButton.setVisible(false)
-            chipButton.setVisible(false)
-            driveButton.setVisible(false)
-            this.buttonSelect.setVisible(false)
+            // this.menuBg.setVisible(false)
+            // puttButton.setVisible(false)
+            // chipButton.setVisible(false)
+            // driveButton.setVisible(false)
+            // this.buttonSelect.setVisible(false)
 
-            // change sprite frame
-            this.aceBattle.setFrame(2)
+            // // change sprite frame
+            // this.aceBattle.setFrame(2)
         })
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             puttButton.off('selected')
@@ -84,7 +87,14 @@ class Play extends Phaser.Scene {
 		const downJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.down)
 		const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
 		
-		if (upJustPressed)
+		if (!this.isStopped) {
+            this.arrow.angle += this.direction * this.meterSpeed
+            if (this.arrow.angle >= 90 || this.arrow.angle <= -90) {
+                this.direction *= -1
+            }
+        }
+
+        if (upJustPressed)
 		{
 			this.selectNextButton(-1)
 		}
@@ -129,34 +139,81 @@ class Play extends Phaser.Scene {
         button.emit('selected')
     }
 
+    // Functions for handling the starting and functioning of the moving meter 
+    startMeter(club){
+        this.currentClub = club
+        this.isStopped = false
 
+        this.hideMenu()
+
+        this.arrow.setVisible(true)
+        this.arrow.angle = -90
+        this.direction = 1
+
+        if(club === 'putt') {
+            this.greenRange = [-10, 10]
+            this.yellowRange = [-30, 30]
+            this.meterSpeed = 1.5
+        }
+
+        this.drawMeter()
+
+        this.input.once('pointerdown', () => this.stopPointer())
+    }
     stopPointer() {
         if(this.isStopped) return
         this.isStopped = true
         
-        if(this.isInGreen(this.stopPointer.angle)) {
+        let angle = this.arrow.angle;
+        if (angle > this.greenRange[0] && angle < this.greenRange[1]) {
             this.successHit()
+        } else if (angle > this.yellowRange[0] && angle < this.yellowRange[1]) {
+            this.weakHit()
         } else {
             this.failHit()
         }
-    }
 
-    isInGreen(angle) {
-        return angle > -20 && angle < 20 
+        // Hide meter and show menu again
+        this.time.delayedCall(2000, () => {
+            this.arrow.setVisible(false)
+            this.graphics.clear()
+            this.showMenu()
+        })
     }
 
     successHit() {
         console.log("windmill hit")
+
+        // decrease the hp
+    }
+
+    weakHit() {
+        console.log("yellow hit less points")
+
+        // decrease the hp less than successful
     }
 
     failHit() {
         console.log("windmill missed")
+
+        // possibly add back health
+        // still increment the par
     }
 
     drawMeter() {
         this.graphics.clear()
 
-        //
+        //draw red (fail) zone
+        this.graphics.fillStyle(0xff0000, 1)
+        this.graphics.fillRect(100, 450, 150, 100)
+
+        // draw Yellow (weak) zone
+        this.graphics.fillStyle(0xffff00, 1);
+        this.graphics.fillRect(250, 450, 150, 100);
+
+        // draw Green (hole in one) zone
+        this.graphics.fillStyle(0x00ff00, 1);
+        this.graphics.fillRect(400, 450, 150, 100)
     }
 
     showMenu() {
