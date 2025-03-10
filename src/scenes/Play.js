@@ -129,6 +129,15 @@ class Play extends Phaser.Scene {
 		{
 			this.confirmSelection()
 		}
+
+        // check if score is 0 yet
+        if (this.currentHealth <= 0) {
+            // this.text.add(500, 470,'you win this battle')
+            this.time.delayedCall(5000, () => {
+                console.log('winned now go back to og scene for now bc dont have game over screenyet')
+                this.scene.start("mapScene")
+            })
+        }
     }
 
     // move the button selector
