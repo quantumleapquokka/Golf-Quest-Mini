@@ -60,13 +60,13 @@ class Load extends Phaser.Scene {
         // Ace battle golf swing animation
         this.anims.create({
             key: 'swing',
-            frameRate: 8,
-            repeat: -1,
+            frameRate: 5,
+            repeat: 0,
             frames: [
                 {key: 'aceBattle', frame:2},
                 {key: 'aceBattle', frame:3},
                 {key: 'aceBattle', frame:2},
-                {key: 'aceBattle', frame:1}
+                {key: 'aceBattle', frame:1},
             ]
         })
 

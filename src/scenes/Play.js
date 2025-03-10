@@ -67,14 +67,17 @@ class Play extends Phaser.Scene {
         // once button selected transition to actual play
         puttButton.on('selected', () => {
             console.log('putt')
+            this.aceBattle.setFrame(2)
             this.startMeter('putt')
         })
         chipButton.on('selected', () => {
             console.log('chip')
+            this.aceBattle.setFrame(2)
             this.startMeter('chip')
         })
         driveButton.on('selected', () => {
             console.log('drive')
+            this.aceBattle.setFrame(2)
             this.startMeter('drive')
         })
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
@@ -176,6 +179,8 @@ class Play extends Phaser.Scene {
     stopPointer() {
         if(this.isStopped) return
         this.isStopped = true
+
+        this.aceBattle.play('swing')
         
         let angle = this.arrow.angle;
         if (angle > this.greenRange[0] && angle < this.greenRange[1]) {
@@ -241,6 +246,5 @@ class Play extends Phaser.Scene {
         this.menuBg.setVisible(false)
         this.buttons.forEach(button => button.setVisible(false))
         this.buttonSelect.setVisible(false)
-        this.windmillHP.setVisible(false)
     }
 }
