@@ -31,6 +31,7 @@ class Load extends Phaser.Scene {
         this.load.image('menuBg', 'menu_background.png')
         this.load.image('meter', 'meter.png')
         this.load.image('arrow', 'arrow.png')
+        this.load.image('windmillHP', 'windmill_health.png')
         
     }
 
@@ -54,6 +55,19 @@ class Load extends Phaser.Scene {
                 start: 2,
                 end: 2,
             })
+        })
+
+        // Ace battle golf swing animation
+        this.anims.create({
+            key: 'swing',
+            frameRate: 8,
+            repeat: -1,
+            frames: [
+                {key: 'aceBattle', frame:2},
+                {key: 'aceBattle', frame:3},
+                {key: 'aceBattle', frame:2},
+                {key: 'aceBattle', frame:1}
+            ]
         })
 
 

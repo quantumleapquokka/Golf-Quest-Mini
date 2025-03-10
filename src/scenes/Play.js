@@ -24,13 +24,14 @@ class Play extends Phaser.Scene {
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'battleBg').setOrigin(0.5, 0.5)
         this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
-        this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5)//.setVisible(false)
-        this.buttonSelect = this.add.image(0, 0, 'selector')//.setVisible(false)
+        this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
+        this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
+        this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
         // this.meter = this.add.image(175, 500, 'meter').setVisible(false)
         
         // Create hit meter
         this.graphics = this.add.graphics()
-        this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5)//.setVisible(false)
+        this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5).setVisible(false)
 
         
         // create attacking menu options
@@ -233,11 +234,13 @@ class Play extends Phaser.Scene {
         this.menuBg.setVisible(true)
         this.buttons.forEach(button => button.setVisible(true))
         this.buttonSelect.setVisible(true)
+        this.windmillHP.setVisible(true)
     }
 
     hideMenu() {
         this.menuBg.setVisible(false)
         this.buttons.forEach(button => button.setVisible(false))
         this.buttonSelect.setVisible(false)
+        this.windmillHP.setVisible(false)
     }
 }
