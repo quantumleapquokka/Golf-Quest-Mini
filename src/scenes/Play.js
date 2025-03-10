@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
 
         // add in sprites and other assets into scene
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'battleBg').setOrigin(0.5, 0.5)
-        this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
+        this.windmill = this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
@@ -44,6 +44,25 @@ class Play extends Phaser.Scene {
         this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5).setVisible(false)
 
         
+        // add tween for the sprites to slide into the scene
+        this.windmill.setX(this.cameras.main.width + this.windmill.width)
+        this.aceBattle.setX(-this.aceBattle.width)
+        this.tweens.add({
+            targets: this.windmill,
+            x: 100,
+            duration: 1000,
+            ease: 'Power2'
+        })
+        this.tweens.add({
+            targets: this.aceBattle,
+            x: 750,
+            duration: 1000,
+            ease: 'Power2'
+        })
+
+
+
+
         // create attacking menu options
         // Putt button
         const puttButton = this.add.text(175, 470, 'Putt', {
@@ -62,8 +81,8 @@ class Play extends Phaser.Scene {
         }).setOrigin(0.5).setVisible(false)
 
 
-        // delay appearance of menu for 3 seconds
-        this.time.delayedCall(3000, () => {
+        // delay appearance of menu for 2 seconds
+        this.time.delayedCall(1500, () => {
             this.healthBarFill.setVisible(true)
             this.showMenu()
         })
