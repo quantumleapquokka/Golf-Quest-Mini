@@ -67,18 +67,19 @@ class Play extends Phaser.Scene {
         puttButton.on('selected', () => {
             console.log('putt')
             this.startMeter('putt')
-            // make everything invisible again
-            // this.menuBg.setVisible(false)
-            // puttButton.setVisible(false)
-            // chipButton.setVisible(false)
-            // driveButton.setVisible(false)
-            // this.buttonSelect.setVisible(false)
-
-            // // change sprite frame
-            // this.aceBattle.setFrame(2)
+        })
+        chipButton.on('selected', () => {
+            console.log('chip')
+            this.startMeter('chip')
+        })
+        driveButton.on('selected', () => {
+            console.log('drive')
+            this.startMeter('drive')
         })
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             puttButton.off('selected')
+            chipButton.off('selected')
+            driveButton.off('selected')
         })
     }
 
@@ -93,6 +94,8 @@ class Play extends Phaser.Scene {
                 this.direction *= -1
             }
         }
+
+        if (this.isMeterActive) return
 
         if (upJustPressed)
 		{
@@ -143,6 +146,7 @@ class Play extends Phaser.Scene {
     startMeter(club){
         this.currentClub = club
         this.isStopped = false
+        this.isMeterActive = true
 
         this.hideMenu()
 
@@ -154,6 +158,14 @@ class Play extends Phaser.Scene {
             this.greenRange = [-10, 10]
             this.yellowRange = [-30, 30]
             this.meterSpeed = 1.5
+        } else if(club === 'chip') {
+            this.greenRange = [-30, 30]
+            this.yellowRange = [-40, 40]
+            this.meterSpeed = 3.5
+        } else if(club === 'drive') {
+            this.greenRange = [-50, 50]
+            this.yellowRange = [-60, 60]
+            this.meterSpeed = 5.5
         }
 
         this.drawMeter()
@@ -178,6 +190,7 @@ class Play extends Phaser.Scene {
             this.arrow.setVisible(false)
             this.graphics.clear()
             this.showMenu()
+            this.isMeterActive = false
         })
     }
 
