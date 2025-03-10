@@ -10,12 +10,18 @@ class Play extends Phaser.Scene {
 
         this.currentClub = null
         this.isStopped = false
+
+        // health bar
+        this.healthBarFill = null;
+        this.maxHealth = 100;
+        this.currentHealth = 100;
     }
     
 
     create() {
         // this.add.text(game.config.width/2, game.config.height/3 - borderUISize - borderPadding, 'this is playScene').setOrigin(0.5)
         console.log('playscene')
+        
 
         // keyboard input
         this.cursors = this.input.keyboard.createCursorKeys()
@@ -26,9 +32,13 @@ class Play extends Phaser.Scene {
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
-        this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
         // this.meter = this.add.image(175, 500, 'meter').setVisible(false)
-        
+       
+        // health bar filling update
+        this.healthBarBackground = this.add.rectangle(670, 105, 300, 20, 0xFFFFFF).setVisible(false)
+        this.healthBarFill = this.add.rectangle(670, 105, 300, 20, 0x00ff00).setVisible(false)
+        this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
+
         // Create hit meter
         this.graphics = this.add.graphics()
         this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5).setVisible(false)
@@ -54,6 +64,7 @@ class Play extends Phaser.Scene {
 
         // delay appearance of menu for 3 seconds
         this.time.delayedCall(3000, () => {
+            this.healthBarFill.setVisible(true)
             this.showMenu()
         })
 
@@ -69,22 +80,27 @@ class Play extends Phaser.Scene {
             console.log('putt')
             this.aceBattle.setFrame(2)
             this.startMeter('putt')
+            this.updateHealth()
         })
         chipButton.on('selected', () => {
             console.log('chip')
             this.aceBattle.setFrame(2)
             this.startMeter('chip')
+            this.updateHealth()
         })
         driveButton.on('selected', () => {
             console.log('drive')
             this.aceBattle.setFrame(2)
             this.startMeter('drive')
+            this.updateHealth()
         })
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             puttButton.off('selected')
             chipButton.off('selected')
             driveButton.off('selected')
         })
+
+        
     }
 
     update() {
@@ -182,7 +198,7 @@ class Play extends Phaser.Scene {
 
         this.aceBattle.play('swing')
         
-        let angle = this.arrow.angle;
+        let angle = this.arrow.angle
         if (angle > this.greenRange[0] && angle < this.greenRange[1]) {
             this.successHit()
         } else if (angle > this.yellowRange[0] && angle < this.yellowRange[1]) {
@@ -204,19 +220,21 @@ class Play extends Phaser.Scene {
         console.log("windmill hit")
 
         // decrease the hp
+        this.decreaseHealth(20)
     }
 
     weakHit() {
         console.log("yellow hit less points")
 
-        // decrease the hp less than successful
+        // decrease the hp less than successful hit
+        this.decreaseHealth(10)
     }
 
     failHit() {
         console.log("windmill missed")
 
-        // possibly add back health
         // still increment the par
+        this.increaseHealth(10)
     }
 
     drawMeter() {
@@ -227,11 +245,11 @@ class Play extends Phaser.Scene {
         this.graphics.fillRect(100, 450, 150, 100)
 
         // draw Yellow (weak) zone
-        this.graphics.fillStyle(0xffff00, 1);
-        this.graphics.fillRect(250, 450, 150, 100);
+        this.graphics.fillStyle(0xffff00, 1)
+        this.graphics.fillRect(250, 450, 150, 100)
 
         // draw Green (hole in one) zone
-        this.graphics.fillStyle(0x00ff00, 1);
+        this.graphics.fillStyle(0x00ff00, 1)
         this.graphics.fillRect(400, 450, 150, 100)
     }
 
@@ -246,5 +264,24 @@ class Play extends Phaser.Scene {
         this.menuBg.setVisible(false)
         this.buttons.forEach(button => button.setVisible(false))
         this.buttonSelect.setVisible(false)
+    }
+
+    //Health bar stuff
+    // update bar width
+    updateHealth() {
+        this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
+    }
+
+     // Update health on hit
+     decreaseHealth(amount) {
+        this.currentHealth -= amount
+        if (this.currentHealth < 0) this.currentHealth = 0
+        this.updateHealth()
+    }
+
+    increaseHealth(amount) {
+        this.currentHealth += amount
+        if (this.currentHealth > this.maxHealth) this.currentHealth = this.maxHealth
+        this.updateHealth()
     }
 }
