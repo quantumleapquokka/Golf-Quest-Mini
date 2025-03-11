@@ -10,11 +10,12 @@ class Play extends Phaser.Scene {
 
         this.currentClub = null
         this.isStopped = false
+        this.par = 0
 
         // health bar
-        this.healthBarFill = null;
-        this.maxHealth = 100;
-        this.currentHealth = 100;
+        this.healthBarFill = null
+        this.maxHealth = 100
+        this.currentHealth = 100
     }
     
 
@@ -25,6 +26,7 @@ class Play extends Phaser.Scene {
 
         // keyboard input
         this.cursors = this.input.keyboard.createCursorKeys()
+        // this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)        // emergency exit
 
         // add in sprites and other assets into scene
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'battleBg').setOrigin(0.5, 0.5)
@@ -32,7 +34,7 @@ class Play extends Phaser.Scene {
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
-        // this.meter = this.add.image(175, 500, 'meter').setVisible(false)
+        this.meter = this.add.image(140, 550, 'meter').setScale(3.1).setVisible(false)
        
         // health bar filling update
         this.healthBarBackground = this.add.rectangle(670, 105, 300, 20, 0xFFFFFF).setVisible(false)
@@ -40,8 +42,8 @@ class Play extends Phaser.Scene {
         this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
 
         // Create hit meter
-        this.graphics = this.add.graphics()
-        this.arrow = this.add.image(100, 550, 'arrow').setScale(0.5).setVisible(false)
+        // this.graphics = this.add.graphics()
+        this.arrow = this.add.image(140, 580, 'arrow').setScale(0.5).setVisible(false)
 
         
         // add tween for the sprites to slide into the scene
@@ -153,7 +155,7 @@ class Play extends Phaser.Scene {
                 fontSize: '64px',
                 align: 'left',
             })
-            this.time.delayedCall(5000, () => {
+            this.time.delayedCall(3000, () => {
                 console.log('winned now go back to og scene for now bc dont have game over screenyet')
                 this.scene.start("mapScene")
             })
@@ -199,6 +201,7 @@ class Play extends Phaser.Scene {
 
         this.hideMenu()
 
+        this.meter.setVisible(true)
         this.arrow.setVisible(true)
         this.arrow.angle = -90
         this.direction = 1
@@ -217,7 +220,7 @@ class Play extends Phaser.Scene {
             this.meterSpeed = 5.5
         }
 
-        this.drawMeter()
+        // this.drawMeter()
 
         this.input.once('pointerdown', () => this.stopPointer())
     }
@@ -239,7 +242,8 @@ class Play extends Phaser.Scene {
         // Hide meter and show menu again
         this.time.delayedCall(2000, () => {
             this.arrow.setVisible(false)
-            this.graphics.clear()
+            this.meter.setVisible(false)
+            // this.graphics.clear()
             this.showMenu()
             this.isMeterActive = false
         })

@@ -4,8 +4,10 @@ class Instructions extends Phaser.Scene {
     }
 
     create() {
-        // background color
-        this.cameras.main.setBackgroundColor('#bfa385'); 
+        // background
+        this.cameras.main.setBackgroundColor('#A8E178')
+        this.add.image(game.config.width/2, game.config.height/2, 'menuBg').setScale(2, 1.5).setOrigin(0.5)
+        this.add.image(game.config.width/2, game.config.height/2, 'inst').setOrigin(0.5)
 
         let creditsConfig = {
             fontFamily: 'times',
@@ -21,7 +23,7 @@ class Instructions extends Phaser.Scene {
         }
 
         // display menu text
-        this.add.text(game.config.width/2, game.config.height/3 - borderUISize - borderPadding, '~INSTRUCTIONS~', creditsConfig).setOrigin(0.5)
+        // this.add.text(game.config.width/2, game.config.height/3 - borderUISize - borderPadding, '~INSTRUCTIONS~', creditsConfig).setOrigin(0.5)
         
         
         // define keys

@@ -76,10 +76,20 @@ class Map extends Phaser.Scene{
         
         // input
         this.cursors = this.input.keyboard.createCursorKeys()
-
+        this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)        // emergency exit
+        if (Phaser.Input.Keyboard.JustDown(this.keyESC)) {
+            console.log("ESC key is detected as down");
+        }
     }
 
     update() {
+        // press escape to return to menu
+        if (this.keyESC.isDown) {
+            console.log('key preesed')
+            this.sound.play('select')
+            this.scene.start("menuScene")
+        }
+
         this.ace.update()       // update ace's movements
         this.direction = new Phaser.Math.Vector2(0)
 
