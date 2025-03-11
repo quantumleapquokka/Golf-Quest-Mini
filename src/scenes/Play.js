@@ -61,8 +61,6 @@ class Play extends Phaser.Scene {
         })
 
 
-
-
         // create attacking menu options
         // Putt button
         const puttButton = this.add.text(175, 470, 'Putt', {
@@ -151,7 +149,10 @@ class Play extends Phaser.Scene {
 
         // check if score is 0 yet
         if (this.currentHealth <= 0) {
-            // this.text.add(500, 470,'you win this battle')
+            this.add.text(500, 470, 'you win', {
+                fontSize: '64px',
+                align: 'left',
+            })
             this.time.delayedCall(5000, () => {
                 console.log('winned now go back to og scene for now bc dont have game over screenyet')
                 this.scene.start("mapScene")

@@ -5,7 +5,7 @@ class Credits extends Phaser.Scene {
 
     create() {
         // background color
-        this.cameras.main.setBackgroundColor('#bfa385'); 
+        this.cameras.main.setBackgroundColor('#ff6ca2') 
 
         let creditsConfig = {
             fontFamily: 'times',
