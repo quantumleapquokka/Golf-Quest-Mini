@@ -16,6 +16,7 @@ class End extends Phaser.Scene {
         
         if (Phaser.Input.Keyboard.JustDown(this.keySPACE)) {
             this.sound.play('select')
+            this.scene.stop("playScene")
             this.scene.start("menuScene")
         }
         

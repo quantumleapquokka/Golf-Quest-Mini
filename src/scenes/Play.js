@@ -21,6 +21,16 @@ class Play extends Phaser.Scene {
 
     create() {
         console.log('playscene')
+
+        this.currentClub = null
+        this.isStopped = false
+        this.par = 0
+        this.isMeterActive = false
+
+        // health bar
+        this.healthBarFill = null
+        this.maxHealth = 100
+        this.currentHealth = 100
         
 
         // keyboard input
@@ -162,7 +172,8 @@ class Play extends Phaser.Scene {
                 align: 'center',
             })
             this.sound.play('victory')
-            this.time.delayedCall(3000, () => {
+            this.isMeterActive = true
+            this.time.delayedCall(2000, () => {
                 this.scene.start("endScene")
             })
         } else if (this.currentHealth <= 0 && this.par > 5) {
@@ -170,8 +181,8 @@ class Play extends Phaser.Scene {
                 fontSize: '120px',
                 align: 'center',
             })
-            this.time.delayedCall(3000, () => {
-                this.scene.restart()
+            this.time.delayedCall(2000, () => {
+                this.scene.stop("playScene")
                 this.scene.start("mapScene")
             })
         }
