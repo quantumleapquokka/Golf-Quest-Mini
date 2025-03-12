@@ -20,7 +20,6 @@ class Play extends Phaser.Scene {
     
 
     create() {
-        // this.add.text(game.config.width/2, game.config.height/3 - borderUISize - borderPadding, 'this is playScene').setOrigin(0.5)
         console.log('playscene')
         
 
@@ -43,8 +42,9 @@ class Play extends Phaser.Scene {
         this.healthBarFill = this.add.rectangle(670, 105, 300, 20, 0x00ff00).setVisible(false)
         this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
 
+        // par
+
         // Create hit meter
-        // this.graphics = this.add.graphics()
         this.arrow = this.add.image(140, 580, 'arrow').setScale(0.5).setVisible(false)
 
         
@@ -121,7 +121,11 @@ class Play extends Phaser.Scene {
             driveButton.off('selected')
         })
 
-        
+        this.parText = this.add.text(game.config.width / 2 + 50, 800, `Par: ${this.par}`, {
+            fontSize: '50px',
+            align: 'left',
+            color: '#000',
+        }).setOrigin(0.5)
     }
 
     update() {
@@ -152,13 +156,21 @@ class Play extends Phaser.Scene {
 		}
 
         // check if score is 0 yet
-        if (this.currentHealth <= 0 && par <= 10) {
-            this.add.text(500, 470, 'VICTORY!', {
-                fontSize: '64px',
-                align: 'left',
+        if (this.currentHealth <= 0 && this.par <= 5) {
+            this.add.text(game.config.width / 2, game.config.height / 2, 'VICTORY!', {
+                fontSize: '120px',
+                align: 'center',
             })
             this.time.delayedCall(3000, () => {
                 this.scene.start("endScene")
+            })
+        } else if (this.currentHealth <= 0 && this.par > 5) {
+            this.add.text(game.config.width / 2, game.config.height / 2, 'YOU LOST,\nTRY AGAIN!', {
+                fontSize: '120px',
+                align: 'center',
+            })
+            this.time.delayedCall(3000, () => {
+                this.scene.start("mapScene")
             })
         }
     }
@@ -203,13 +215,6 @@ class Play extends Phaser.Scene {
 
         this.par += 1   // increment par
 
-        //debug
-        this.add.text(game.config.width/2 + 50, 800, `par: ${this.par}`, {
-            fontSize: '50px',
-            align: 'left',
-            color: '#000',
-        }).setOrigin(0.5)
-
         this.hideMenu()
 
         
@@ -233,8 +238,6 @@ class Play extends Phaser.Scene {
             this.yellowRange = [-60, 60]
             this.meterSpeed = 5.5
         }
-
-        // this.drawMeter()
 
         this.input.once('pointerdown', () => {this.stopPointer(), this.sound.play('hit')})
     }
@@ -284,22 +287,6 @@ class Play extends Phaser.Scene {
 
         // still increment the par
         this.increaseHealth(10)
-    }
-
-    drawMeter() {
-        this.graphics.clear()
-
-        //draw red (fail) zone
-        this.graphics.fillStyle(0xff0000, 1)
-        this.graphics.fillRect(100, 450, 150, 100)
-
-        // draw Yellow (weak) zone
-        this.graphics.fillStyle(0xffff00, 1)
-        this.graphics.fillRect(250, 450, 150, 100)
-
-        // draw Green (hole in one) zone
-        this.graphics.fillStyle(0x00ff00, 1)
-        this.graphics.fillRect(400, 450, 150, 100)
     }
 
     showMenu() {

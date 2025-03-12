@@ -36,10 +36,6 @@ class Map extends Phaser.Scene{
         console.log(aceSpawn)
         this.ace = new Ace(this, aceSpawn.x, aceSpawn.y, "aceMap", 0, "down")
         this.add.existing(this.ace)
-        // this.ace = this.physics.add.sprite(aceSpawn.x, aceSpawn.y, 'aceMap', 0)
-        // this.ace.setScale(1.5)
-        // // this.aceMap = this.physics.add.sprite(32, 32, 'aceMap', 0)
-        // this.ace.body.setCollideWorldBounds(true)
 
         // cameras and bounds
         this.cameras.main.setBounds(0, 0, map.widthInPixels * 3, map.heightInPixels * 3)
@@ -65,21 +61,13 @@ class Map extends Phaser.Scene{
         }, this)
         this.physics.add.overlap(this.ace, holeLayer, (player, layer) => {
             // Determine the tile at the player's world position
-            let tile = holeLayer.getTileAtWorldXY(player.x, player.y);
-            // if(tile && tile.properties.hole) {
-                
-            //     console.log("Next scene")
-            //     this.scene.start("playScene")
-            // }
+            let tile = holeLayer.getTileAtWorldXY(player.x, player.y)
         }, null, this)
         
         
         // input
         this.cursors = this.input.keyboard.createCursorKeys()
         this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)        // emergency exit
-        if (Phaser.Input.Keyboard.JustDown(this.keyESC)) {
-            console.log("ESC key is detected as down");
-        }
     }
 
     update() {
