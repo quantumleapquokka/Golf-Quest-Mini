@@ -161,6 +161,7 @@ class Play extends Phaser.Scene {
                 fontSize: '120px',
                 align: 'center',
             })
+            this.sound.play('victory')
             this.time.delayedCall(3000, () => {
                 this.scene.start("endScene")
             })
@@ -221,6 +222,8 @@ class Play extends Phaser.Scene {
         this.arrow.setVisible(true)
         this.arrow.angle = -90
         this.direction = 1
+
+        this.sound.play('powerMeter')
 
         if(club === 'putt') {
             this.meterE.setVisible(true)
