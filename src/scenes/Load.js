@@ -36,7 +36,10 @@ class Load extends Phaser.Scene {
         // load other stuff
         this.load.image('selector', 'selector.png')
         this.load.image('menuBg', 'menu_background.png')
-        this.load.image('meter', 'meter.png')
+        this.load.image('meter', 'meter.png')   // not in use
+        this.load.image('meterE', 'meter_easy.png')
+        this.load.image('meterM', 'meter_med.png')
+        this.load.image('meterD', 'meter_hard.png')
         this.load.image('arrow', 'arrow.png')
         this.load.image('windmillHP', 'windmill_health.png')
         this.load.image('inst', 'instructions.png')

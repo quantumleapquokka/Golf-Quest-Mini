@@ -34,7 +34,9 @@ class Play extends Phaser.Scene {
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
-        this.meter = this.add.image(140, 550, 'meter').setScale(3.1).setVisible(false)
+        this.meterE = this.add.image(140, 550, 'meterE').setScale(3.1).setVisible(false)
+        this.meterM = this.add.image(140, 550, 'meterM').setScale(3.1).setVisible(false)
+        this.meterD = this.add.image(140, 550, 'meterD').setScale(3.1).setVisible(false)
        
         // health bar filling update
         this.healthBarBackground = this.add.rectangle(670, 105, 300, 20, 0xFFFFFF).setVisible(false)
@@ -210,20 +212,23 @@ class Play extends Phaser.Scene {
 
         this.hideMenu()
 
-        this.meter.setVisible(true)
+        
         this.arrow.setVisible(true)
         this.arrow.angle = -90
         this.direction = 1
 
         if(club === 'putt') {
+            this.meterE.setVisible(true)
             this.greenRange = [-10, 10]
             this.yellowRange = [-30, 30]
             this.meterSpeed = 1.5
         } else if(club === 'chip') {
+            this.meterM.setVisible(true)
             this.greenRange = [-30, 30]
             this.yellowRange = [-40, 40]
             this.meterSpeed = 3.5
         } else if(club === 'drive') {
+            this.meterD.setVisible(true)
             this.greenRange = [-50, 50]
             this.yellowRange = [-60, 60]
             this.meterSpeed = 5.5
@@ -251,7 +256,9 @@ class Play extends Phaser.Scene {
         // Hide meter and show menu again
         this.time.delayedCall(2000, () => {
             this.arrow.setVisible(false)
-            this.meter.setVisible(false)
+            this.meterE.setVisible(false)
+            this.meterM.setVisible(false)
+            this.meterD.setVisible(false)
             // this.graphics.clear()
             this.showMenu()
             this.isMeterActive = false
