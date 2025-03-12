@@ -171,6 +171,7 @@ class Play extends Phaser.Scene {
                 align: 'center',
             })
             this.time.delayedCall(3000, () => {
+                this.scene.restart()
                 this.scene.start("mapScene")
             })
         }
