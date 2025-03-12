@@ -150,14 +150,13 @@ class Play extends Phaser.Scene {
 		}
 
         // check if score is 0 yet
-        if (this.currentHealth <= 0) {
-            this.add.text(500, 470, 'you win', {
+        if (this.currentHealth <= 0 && par <= 10) {
+            this.add.text(500, 470, 'VICTORY!', {
                 fontSize: '64px',
                 align: 'left',
             })
             this.time.delayedCall(3000, () => {
-                console.log('winned now go back to og scene for now bc dont have game over screenyet')
-                this.scene.start("mapScene")
+                this.scene.start("endScene")
             })
         }
     }
@@ -190,6 +189,7 @@ class Play extends Phaser.Scene {
     // confirm selection
     confirmSelection() {
         const button = this.buttons[this.selectedButtonIndex]   // currently selected button
+        this.sound.play('clubSelect')
         button.emit('selected')
     }
 
@@ -198,6 +198,15 @@ class Play extends Phaser.Scene {
         this.currentClub = club
         this.isStopped = false
         this.isMeterActive = true
+
+        this.par += 1   // increment par
+
+        //debug
+        this.add.text(game.config.width/2 + 50, 800, `par: ${this.par}`, {
+            fontSize: '50px',
+            align: 'left',
+            color: '#000',
+        }).setOrigin(0.5)
 
         this.hideMenu()
 
@@ -222,7 +231,7 @@ class Play extends Phaser.Scene {
 
         // this.drawMeter()
 
-        this.input.once('pointerdown', () => this.stopPointer())
+        this.input.once('pointerdown', () => {this.stopPointer(), this.sound.play('hit')})
     }
     stopPointer() {
         if(this.isStopped) return

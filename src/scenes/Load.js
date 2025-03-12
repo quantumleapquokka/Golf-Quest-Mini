@@ -19,12 +19,19 @@ class Load extends Phaser.Scene {
 
         // load audio
         this.load.audio('select', 'select.wav')
+        this.load.audio('transition', 'goInHole.wav')
+        this.load.audio('hit', 'hit.wav')
+        this.load.audio('victory', 'levelWin.wav')
+        this.load.audio('clubSelect', 'menuSelect.wav')
+        this.load.audio('powerMeter', 'powerUp.wav')
+
 
         // load map backgrounds/tilemaps
         this.load.image('tilesetImage', 'tileset.png')
         this.load.tilemapTiledJSON('tilemapJSON', 'mapworld.json')
         this.load.image('battleBg', 'boss_battle_bg.png')
         this.load.image('menuBackground', 'main_title_screen.png')
+        this.load.image('gameOver', 'game_over.png')
 
         // load other stuff
         this.load.image('selector', 'selector.png')

@@ -31,8 +31,8 @@ class Menu extends Phaser.Scene {
 
         // skip to play/map scene for debugging 
         // this.scene.start("mapScene")
-        // this.scene.start("playScene") 
-        this.scene.start("instScene")
+        this.scene.start("playScene") 
+        // this.scene.start("instScene")
 
     }
 
