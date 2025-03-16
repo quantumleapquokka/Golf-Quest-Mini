@@ -18,7 +18,7 @@ class Map extends Phaser.Scene{
         const greenery = map.createLayer('greenery', tileset, 0, 0)
         const holeLayer = map.createLayer('hole', tileset, 0, 0)
 
-        this.cameras.main.setZoom(2)
+        this.cameras.main.setZoom(1.5)
         
         bgLayer.setScale(3)
         water.setScale(3)
@@ -56,7 +56,7 @@ class Map extends Phaser.Scene{
             // Wait until the fade-out is complete, then start the scene
             this.time.delayedCall(1000, () => {
                 this.scene.start("playScene")
-                this.cameras.main.fadeIn(2000, 0, 0, 0) // Fade in the next scene
+                // this.cameras.main.fadeIn(2000, 0, 0, 0) // Fade in the next scene
             })
         }, this)
         this.physics.add.overlap(this.ace, holeLayer, (player, layer) => {

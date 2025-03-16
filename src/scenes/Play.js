@@ -21,6 +21,7 @@ class Play extends Phaser.Scene {
 
     create() {
         console.log('playscene')
+        this.cameras.main.fadeIn(3000, 0, 0, 0) // Fade in the next scene
 
         this.currentClub = null
         this.isStopped = false

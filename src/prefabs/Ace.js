@@ -5,6 +5,7 @@ class Ace extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this)
 
         this.setScale(1.5)
+        this.setSize(27,27)
         this.setCollideWorldBounds(true)
 
         this.VEL = 100
