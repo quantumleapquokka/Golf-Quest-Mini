@@ -43,6 +43,7 @@ class Load extends Phaser.Scene {
         this.load.image('arrow', 'arrow.png')
         this.load.image('windmillHP', 'windmill_health.png')
         this.load.image('inst', 'instructions.png')
+        this.load.image('par', 'par.png')
         
     }
 

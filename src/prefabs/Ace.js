@@ -16,10 +16,6 @@ class Ace extends Phaser.Physics.Arcade.Sprite {
             move: new MoveState()
         }, [scene, this])
     }
-    
-    // update() {
-    //     this.stateMachine.step()
-    // }
 }
 
 class IdleState extends State {
@@ -40,18 +36,6 @@ class IdleState extends State {
 class MoveState extends State {
     execute(scene, ace) {
         const { left, right, up, down } = ace.keys
-
-        // let direction = new Phaser.Math.Vector2(0,0)
-
-        // if (up.isDown || down.isDown) {
-        //     direction.y = -1
-        //     ace.anims.play("walk", true)
-        // }
-
-        // if (left.isDown || right.isDown) {
-        //     direction.x = left.isDown ? -1 : 1
-        //     ace.anims.play("walk-side", true)
-        // }
         this.direction = new Phaser.Math.Vector2(0)
         if(this.cursors.left.isDown) {
             this.direction.x = -1

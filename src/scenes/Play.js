@@ -54,6 +54,12 @@ class Play extends Phaser.Scene {
         this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
 
         // par
+        this.parText = this.add.text(game.config.width / 2 + 300, game.config.height / 2, `Current Par: ${this.par}`, {
+            fontSize: '25px',
+            align: 'center',
+        }).setOrigin(0.5).setVisible(false)
+
+        this.parTotal = this.add.image(0, this.game.config.height / 2 + 50, 'par').setScale(3)
 
         // Create hit meter
         this.arrow = this.add.image(140, 580, 'arrow').setScale(0.5).setVisible(false)
@@ -73,6 +79,23 @@ class Play extends Phaser.Scene {
             x: 750,
             duration: 1000,
             ease: 'Power2'
+        })
+        this.tweens.add({
+            targets: this.parTotal,
+            x: 500,
+            duration: 1000,
+            ease: 'Power2',
+            onComplete: () => {
+                // slide text out of screen again
+                this.time.delayedCall(1500, () => {
+                    this.tweens.add({
+                        targets: this.parTotal,
+                        x: 1500,
+                        duration: 1000,
+                        ease: 'Power2'
+                    })
+                })
+            }
         })
 
 
@@ -95,9 +118,10 @@ class Play extends Phaser.Scene {
 
 
         // delay appearance of menu for 2 seconds
-        this.time.delayedCall(1500, () => {
+        this.time.delayedCall(3000, () => {
             this.healthBarFill.setVisible(true)
             this.showMenu()
+            this.parText.setVisible(true)
         })
 
         this.buttons.push(puttButton)
@@ -132,11 +156,6 @@ class Play extends Phaser.Scene {
             driveButton.off('selected')
         })
 
-        this.parText = this.add.text(game.config.width / 2 + 50, 800, `Par: ${this.par}`, {
-            fontSize: '50px',
-            align: 'left',
-            color: '#000',
-        }).setOrigin(0.5)
     }
 
     update() {
@@ -153,34 +172,31 @@ class Play extends Phaser.Scene {
 
         if (this.isMeterActive) return
 
-        if (upJustPressed)
-		{
+        if (upJustPressed) {
 			this.selectNextButton(-1)
 		}
-		else if (downJustPressed)
-		{
+		else if (downJustPressed) {
 			this.selectNextButton(1)
 		}
-		else if (spaceJustPressed)
-		{
+		else if (spaceJustPressed) {
 			this.confirmSelection()
 		}
 
+        
         // check if score is 0 yet
-        if (this.currentHealth <= 0 && this.par <= 5) {
+        if (this.currentHealth <= 0 && this.par <= 7) {
             this.add.text(game.config.width / 2, game.config.height / 2, 'VICTORY!', {
                 fontSize: '120px',
-                align: 'center',
-            })
+                align: 'center'
+            }).setOrigin(1)
             this.sound.play('victory')
             this.isMeterActive = true
             this.time.delayedCall(2000, () => {
                 this.scene.start("endScene")
             })
-        } else if (this.currentHealth <= 0 && this.par > 5) {
+        } else if (this.currentHealth <= 0 && this.par > 7) {
             this.add.text(game.config.width / 2, game.config.height / 2, 'YOU LOST,\nTRY AGAIN!', {
                 fontSize: '120px',
-                align: 'center',
             })
             this.time.delayedCall(2000, () => {
                 this.scene.stop("playScene")
@@ -247,15 +263,19 @@ class Play extends Phaser.Scene {
             this.meterM.setVisible(true)
             this.greenRange = [-30, 30]
             this.yellowRange = [-40, 40]
-            this.meterSpeed = 3.5
+            this.meterSpeed = 5.5
         } else if(club === 'drive') {
             this.meterD.setVisible(true)
             this.greenRange = [-50, 50]
             this.yellowRange = [-60, 60]
-            this.meterSpeed = 5.5
+            this.meterSpeed = 7.5
         }
 
-        this.input.once('pointerdown', () => {this.stopPointer(), this.sound.play('hit')})
+        this.input.once('pointerdown', () => {
+            this.stopPointer(), 
+            this.sound.play('hit'),
+            this.parText.setText('Current Par: ' + this.par) // update par text
+        })
     }
     stopPointer() {
         if(this.isStopped) return
@@ -321,7 +341,9 @@ class Play extends Phaser.Scene {
     //Health bar stuff
     // update bar width
     updateHealth() {
-        this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
+        this.time.delayedCall(2000, () => {
+            this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
+        } )
     }
 
      // Update health on hit
