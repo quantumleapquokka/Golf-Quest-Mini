@@ -22,7 +22,9 @@ class Play extends Phaser.Scene {
 
     create() {
         console.log('playscene')
-        this.cameras.main.fadeIn(3000, 0, 0, 0) // Fade in the next scene
+        this.sound.play('slideIn')
+        this.cameras.main.fadeIn(2500, 0, 0, 0) // Fade in the next scene
+        
 
         this.currentClub = null
         this.isStopped = false
@@ -175,9 +177,11 @@ class Play extends Phaser.Scene {
 
         if (this.isSelecting) {
            if (upJustPressed) {
+                this.sound.play('select')
                 this.selectNextButton(-1)
             }
             else if (downJustPressed) {
+                this.sound.play('select')
                 this.selectNextButton(1)
             }
             else if (spaceJustPressed) {
@@ -185,27 +189,25 @@ class Play extends Phaser.Scene {
                 this.isSelecting = false    // switch space for shooting
             } 
         }
-
-        
         // check if score is 0 yet
         if (this.currentHealth <= 0 && this.par <= 7) {
-            this.add.text(game.config.width / 2, game.config.height / 2, 'VICTORY!', {
+            this.add.text(this.game.config.width / 2, game.config.height / 2, 'VICTORY!', {
                 fontSize: '120px',
                 align: 'center'
-            }).setOrigin(1)
+            }).setOrigin(0.5)
             this.sound.play('victory')
             this.isMeterActive = true
             this.time.delayedCall(2000, () => {
                 this.scene.start("endScene")
             })
         } else if (this.currentHealth <= 0 && this.par > 7) {
-            this.add.text(game.config.width / 2, game.config.height / 2, 'YOU LOST,\nTRY AGAIN!', {
+            this.add.text(this.game.config.width / 2, game.config.height / 2, 'YOU LOST,\nOVER PAR\nTRY AGAIN!', {
                 fontSize: '120px',
-            })
-            this.time.delayedCall(2000, () => {
-                this.scene.stop("playScene")
-                this.scene.start("mapScene")
-            })
+            }).setOrigin(0.5)
+            // this.time.delayedCall(2000, () => {
+            //     this.scene.stop("playScene")
+            //     this.scene.start("mapScene")
+            // })
         }
     }
 

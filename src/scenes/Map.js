@@ -52,11 +52,10 @@ class Map extends Phaser.Scene{
         holeLayer.setTileIndexCallback(901, () => {
             // Fade out first
             this.cameras.main.fadeOut(1000, 0, 0, 0) // 1000ms (1 second fade-out)
-
+            this.sound.play('transition')
             // Wait until the fade-out is complete, then start the scene
-            this.time.delayedCall(1000, () => {
+            this.time.delayedCall(2000, () => {
                 this.scene.start("playScene")
-                // this.cameras.main.fadeIn(2000, 0, 0, 0) // Fade in the next scene
             })
         }, this)
         this.physics.add.overlap(this.ace, holeLayer, (player, layer) => {

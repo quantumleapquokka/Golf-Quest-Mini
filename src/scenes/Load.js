@@ -24,6 +24,7 @@ class Load extends Phaser.Scene {
         this.load.audio('victory', 'levelWin.wav')
         this.load.audio('clubSelect', 'menuSelect.wav')
         this.load.audio('powerMeter', 'powerUp.wav')
+        this.load.audio('slideIn', 'slideIn.wav')
 
 
         // load map backgrounds/tilemaps
