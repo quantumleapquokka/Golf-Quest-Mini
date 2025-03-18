@@ -6,8 +6,12 @@ class Instructions extends Phaser.Scene {
     create() {
         // background
         this.cameras.main.setBackgroundColor('#A8E178')
+
+        // pink background
         this.add.image(game.config.width/2, game.config.height/2, 'menuBg').setScale(2, 1.5).setOrigin(0.5)
-        this.add.image(game.config.width/2, game.config.height/2, 'inst').setOrigin(0.5)
+        
+        // instruction text
+        this.add.image(game.config.width/2 - 15, game.config.height/2 + 10, 'inst').setOrigin(0.5)
 
         // display menu text
         this.add.text(game.config.width/2, game.config.height/1 - borderUISize - borderPadding, 'press [space] to return to main menu', {
@@ -17,10 +21,9 @@ class Instructions extends Phaser.Scene {
             // color: '#000'
         }).setOrigin(0.5)
         
-        this.add.text(game.config.width/2 + 50, 100, '+', {
+        this.add.text(game.config.width/2 + 15, 95, '+', {
             fontSize: '50px',
             align: 'left',
-            color: '#000',
             fontStyle: 'bold'
         }).setOrigin(0.5)
         

@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
         this.currentClub = null
         this.isStopped = false
         this.par = 0
+        this.isSelecting = true     // var to handle toggling between shoot and select
 
         // health bar
         this.healthBarFill = null
@@ -172,15 +173,18 @@ class Play extends Phaser.Scene {
 
         if (this.isMeterActive) return
 
-        if (upJustPressed) {
-			this.selectNextButton(-1)
-		}
-		else if (downJustPressed) {
-			this.selectNextButton(1)
-		}
-		else if (spaceJustPressed) {
-			this.confirmSelection()
-		}
+        if (this.isSelecting) {
+           if (upJustPressed) {
+                this.selectNextButton(-1)
+            }
+            else if (downJustPressed) {
+                this.selectNextButton(1)
+            }
+            else if (spaceJustPressed) {
+                this.confirmSelection()
+                this.isSelecting = false    // switch space for shooting
+            } 
+        }
 
         
         // check if score is 0 yet
@@ -235,6 +239,7 @@ class Play extends Phaser.Scene {
         const button = this.buttons[this.selectedButtonIndex]   // currently selected button
         this.sound.play('clubSelect')
         button.emit('selected')
+        this.isSelecting = false
     }
 
     // Functions for handling the starting and functioning of the moving meter 
@@ -258,7 +263,7 @@ class Play extends Phaser.Scene {
             this.meterE.setVisible(true)
             this.greenRange = [-10, 10]
             this.yellowRange = [-30, 30]
-            this.meterSpeed = 1.5
+            this.meterSpeed = 2.5
         } else if(club === 'chip') {
             this.meterM.setVisible(true)
             this.greenRange = [-30, 30]
@@ -268,10 +273,10 @@ class Play extends Phaser.Scene {
             this.meterD.setVisible(true)
             this.greenRange = [-50, 50]
             this.yellowRange = [-60, 60]
-            this.meterSpeed = 7.5
+            this.meterSpeed = 9.5
         }
 
-        this.input.once('pointerdown', () => {
+        this.cursors.space.once('down', () => {
             this.stopPointer(), 
             this.sound.play('hit'),
             this.parText.setText('Current Par: ' + this.par) // update par text
@@ -298,9 +303,9 @@ class Play extends Phaser.Scene {
             this.meterE.setVisible(false)
             this.meterM.setVisible(false)
             this.meterD.setVisible(false)
-            // this.graphics.clear()
             this.showMenu()
             this.isMeterActive = false
+            this.isSelecting = true
         })
     }
 
