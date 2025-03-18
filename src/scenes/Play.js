@@ -199,10 +199,11 @@ class Play extends Phaser.Scene {
                 fontSize: '120px',
                 align: 'center'
             }).setOrigin(0.5)
+            this.sound.stopAll()
             this.sound.play('victory')
             this.isMeterActive = true
             this.time.delayedCall(2000, () => {
-                this.sound.stopAll()
+                this.events.off(Phaser.Scenes.Events.SHUTDOWN)
                 this.scene.start("endScene")
             })
         } else if (this.currentHealth <= 0 && this.par > 7) {
@@ -210,7 +211,7 @@ class Play extends Phaser.Scene {
                 fontSize: '120px',
             }).setOrigin(0.5)
             this.time.delayedCall(2000, () => {
-                this.scene.stop("playScene")
+                this.events.off(Phaser.Scenes.Events.SHUTDOWN)
                 this.sound.stopAll()
                 this.scene.start("mapScene")
             })
