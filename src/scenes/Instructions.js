@@ -12,7 +12,7 @@ class Instructions extends Phaser.Scene {
         
         // instruction text
         this.add.image(game.config.width/2 - 15, game.config.height/2 + 10, 'inst').setOrigin(0.5)
-
+        this.add.text(335, 225, '(to win, you must be under the given level par)')
         // display menu text
         this.add.text(game.config.width/2, game.config.height/1 - borderUISize - borderPadding, 'press [space] to return to main menu', {
             fontStyle: 'bold',

@@ -18,13 +18,17 @@ class Load extends Phaser.Scene {
         this.load.image('windmill', 'windmill_boss.png')
 
         // load audio
-        this.load.audio('select', 'select.wav')
-        this.load.audio('transition', 'goInHole.wav')
-        this.load.audio('hit', 'hit.wav')
-        this.load.audio('victory', 'levelWin.wav')
-        this.load.audio('clubSelect', 'menuSelect.wav')
-        this.load.audio('powerMeter', 'powerUp.wav')
-        this.load.audio('slideIn', 'slideIn.wav')
+        this.load.audio('select', 'sound/select.wav')
+        this.load.audio('transition', 'sound/goInHole.wav')
+        this.load.audio('hit', 'sound/hit.wav')
+        this.load.audio('victory', 'sound/levelWin.wav')
+        this.load.audio('clubSelect', 'sound/menuSelect.wav')
+        this.load.audio('powerMeter', 'sound/powerUp.wav')
+        this.load.audio('slideIn', 'sound/slideIn.wav')
+        this.load.audio('bgM', 'sound/map_bgm.wav')
+        this.load.audio('bgmP', 'sound/play_bgm.wav')
+        this.load.audio('titlebgm', 'sound/title.wav')
+        this.load.audio('health_down', 'sound/health_down.wav')
 
 
         // load map backgrounds/tilemaps

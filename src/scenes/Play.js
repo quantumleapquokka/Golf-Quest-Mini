@@ -21,6 +21,10 @@ class Play extends Phaser.Scene {
     
 
     create() {
+        // bg music
+        this.bgm = this.sound.add('bgmP', {loop: true, volume: 0.3})
+        this.bgm.play()
+
         console.log('playscene')
         this.sound.play('slideIn')
         this.cameras.main.fadeIn(2500, 0, 0, 0) // Fade in the next scene
@@ -198,16 +202,18 @@ class Play extends Phaser.Scene {
             this.sound.play('victory')
             this.isMeterActive = true
             this.time.delayedCall(2000, () => {
+                this.sound.stopAll()
                 this.scene.start("endScene")
             })
         } else if (this.currentHealth <= 0 && this.par > 7) {
             this.add.text(this.game.config.width / 2, game.config.height / 2, 'YOU LOST,\nOVER PAR\nTRY AGAIN!', {
                 fontSize: '120px',
             }).setOrigin(0.5)
-            // this.time.delayedCall(2000, () => {
-            //     this.scene.stop("playScene")
-            //     this.scene.start("mapScene")
-            // })
+            this.time.delayedCall(2000, () => {
+                this.scene.stop("playScene")
+                this.sound.stopAll()
+                this.scene.start("mapScene")
+            })
         }
     }
 
@@ -349,6 +355,7 @@ class Play extends Phaser.Scene {
     // update bar width
     updateHealth() {
         this.time.delayedCall(2000, () => {
+            this.sound.play('health_down')
             this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
         } )
     }

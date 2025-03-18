@@ -8,6 +8,10 @@ class Map extends Phaser.Scene{
     }
 
     create(){
+        // background sound
+        this.bgm = this.sound.add('bgM', {loop: true})
+        this.bgm.play()
+
         // tilemap tingz
         const map = this.add.tilemap('tilemapJSON')
         const tileset = map.addTilesetImage('tileset', 'tilesetImage')
@@ -55,6 +59,7 @@ class Map extends Phaser.Scene{
             this.sound.play('transition')
             // Wait until the fade-out is complete, then start the scene
             this.time.delayedCall(2000, () => {
+                this.sound.stopAll()
                 this.scene.start("playScene")
             })
         }, this)
@@ -71,6 +76,7 @@ class Map extends Phaser.Scene{
 
     update() {
         // press escape to return to menu
+        // used for debugging not actual control
         if (this.keyESC.isDown) {
             console.log('key preesed')
             this.sound.play('select')

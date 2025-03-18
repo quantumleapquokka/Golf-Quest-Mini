@@ -8,8 +8,7 @@ class Credits extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#ff6ca2') 
 
         let creditsConfig = {
-            fontFamily: 'times',
-            fontSize: '80px',
+            fontSize: '75px',
             color: '#000000',
             backgroundColor: '',
             padding: {
@@ -22,11 +21,11 @@ class Credits extends Phaser.Scene {
 
         // display menu text
         this.add.text(game.config.width/2, game.config.height/3 - borderUISize - borderPadding- 50, '★CREDITS★', creditsConfig).setOrigin(0.5)
-        creditsConfig.fontSize = '35px'
+        creditsConfig.fontSize = '25px'
 
         this.add.text(game.config.width/2, game.config.height/3, 'Code - Samantha Siew', creditsConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/2.5, 'Visual Assets(sprites, ui, etc.) - Samantha Siew', creditsConfig).setOrigin(0.5)
-        this.add.text(game.config.width/2, game.config.height/2.0, 'Sound Assets: made on onlinesound.net \nor found on internet copyright free - Samantha Siew', creditsConfig).setOrigin(0.5)
+        this.add.text(game.config.width/2, game.config.height/2.0, 'Sound Assets: made on onlinesound.net \nor found on internet copyright free', creditsConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/1.5, 'TV Show - Steven Universe (S1 EP19 [Rose\'s Room\])', creditsConfig).setOrigin(0.5)
 
         creditsConfig.backgroundColor = '#40f549'
