@@ -354,14 +354,16 @@ class Play extends Phaser.Scene {
     //Health bar stuff
     // update bar width
     updateHealth() {
-        this.time.delayedCall(2000, () => {
-            this.sound.play('health_down')
+        this.time.delayedCall(3000, () => {
             this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
         } )
     }
 
      // Update health on hit
      decreaseHealth(amount) {
+        this.time.delayedCall(2000, () => {
+            this.sound.play('health_down')
+        })
         this.currentHealth -= amount
         if (this.currentHealth < 0) this.currentHealth = 0
         this.updateHealth()
