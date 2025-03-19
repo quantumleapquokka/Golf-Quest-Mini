@@ -60,6 +60,7 @@ class Map extends Phaser.Scene{
             // Wait until the fade-out is complete, then start the scene
             this.time.delayedCall(2000, () => {
                 this.sound.stopAll()
+                console.log("starting play scene")
                 this.scene.start("playScene")
             })
         }, this)

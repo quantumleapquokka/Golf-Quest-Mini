@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
 
     create() {
         // bg music
+        this.sound.stopAll()
         this.bgm = this.sound.add('bgmP', {loop: true, volume: 0.3})
         this.bgm.play()
 
@@ -29,6 +30,10 @@ class Play extends Phaser.Scene {
         this.sound.play('slideIn')
         this.cameras.main.fadeIn(2500, 0, 0, 0) // Fade in the next scene
         
+        this.gameStarted = false
+        this.time.delayedCall(1000, () => {
+            this.gameStarted = true
+        }, [], this)
 
         this.currentClub = null
         this.isStopped = false
@@ -202,16 +207,19 @@ class Play extends Phaser.Scene {
             this.sound.stopAll()
             this.sound.play('victory')
             this.isMeterActive = true
-            this.time.delayedCall(2000, () => {
+            this.time.delayedCall(5000, () => {
                 this.events.off(Phaser.Scenes.Events.SHUTDOWN)
+                console.log("game over scene")
                 this.scene.start("endScene")
             })
-        } else if (this.currentHealth <= 0 && this.par > 7) {
+        } else if (this.gameStarted && this.currentHealth <= 0 && this.par > 7) {
             this.add.text(this.game.config.width / 2, game.config.height / 2, 'YOU LOST,\nOVER PAR\nTRY AGAIN!', {
                 fontSize: '120px',
             }).setOrigin(0.5)
-            this.time.delayedCall(2000, () => {
-                this.events.off(Phaser.Scenes.Events.SHUTDOWN)
+            this.events.off(Phaser.Scenes.Events.SHUTDOWN)
+            this.par = 0
+            this.currentHealth = 100
+            this.time.delayedCall(5000, () => {
                 this.sound.stopAll()
                 this.scene.start("mapScene")
             })
@@ -286,12 +294,16 @@ class Play extends Phaser.Scene {
         }
 
         this.cursors.space.once('down', () => {
-            this.stopPointer(), 
+            this.stopPointer(club), 
             this.sound.play('hit'),
+            this.time.delayedCall(4000, () => {
+                this.sound.play('health_down')
+            }),
             this.parText.setText('Current Par: ' + this.par) // update par text
         })
     }
-    stopPointer() {
+    stopPointer(club) {
+        this.currentClub = club
         if(this.isStopped) return
         this.isStopped = true
 
@@ -299,15 +311,15 @@ class Play extends Phaser.Scene {
         
         let angle = this.arrow.angle
         if (angle > this.greenRange[0] && angle < this.greenRange[1]) {
-            this.successHit()
+            this.successHit(club)
         } else if (angle > this.yellowRange[0] && angle < this.yellowRange[1]) {
-            this.weakHit()
+            this.weakHit(club)
         } else {
             this.failHit()
         }
 
         // Hide meter and show menu again
-        this.time.delayedCall(2000, () => {
+        this.time.delayedCall(2500, () => {
             this.arrow.setVisible(false)
             this.meterE.setVisible(false)
             this.meterM.setVisible(false)
@@ -318,18 +330,35 @@ class Play extends Phaser.Scene {
         })
     }
 
-    successHit() {
+    successHit(club) {
         console.log("windmill hit")
+        this.currentClub = club
+        console.log("curr club: ", club)
 
         // decrease the hp
-        this.decreaseHealth(20)
+        if (club === 'putt') {
+            this.decreaseHealth(10)
+        } else if (club === 'chip') {
+            this.decreaseHealth(15)
+        } else {
+            this.decreaseHealth(20)
+        }
+        
     }
 
-    weakHit() {
+    weakHit(club) {
         console.log("yellow hit less points")
+        this.currentClub = club
+        console.log("curr club: ", club)
 
         // decrease the hp less than successful hit
-        this.decreaseHealth(10)
+        if (club === 'putt') {
+            this.decreaseHealth(5)
+        } else if (club === 'chip') {
+            this.decreaseHealth(10)
+        } else {
+            this.decreaseHealth(15)
+        }
     }
 
     failHit() {
@@ -355,16 +384,13 @@ class Play extends Phaser.Scene {
     //Health bar stuff
     // update bar width
     updateHealth() {
-        this.time.delayedCall(3000, () => {
+        this.time.delayedCall(5000, () => {
             this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
         } )
     }
 
      // Update health on hit
      decreaseHealth(amount) {
-        this.time.delayedCall(2000, () => {
-            this.sound.play('health_down')
-        })
         this.currentHealth -= amount
         if (this.currentHealth < 0) this.currentHealth = 0
         this.updateHealth()
