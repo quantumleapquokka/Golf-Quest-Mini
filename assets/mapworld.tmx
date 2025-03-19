@@ -4508,7 +4508,7 @@
   <tile id="900">
    <properties>
     <property name="collides" type="bool" value="false"/>
-    <property name="hole" type="bool" value="true"/>
+    <property name="hole" type="bool" value="false"/>
    </properties>
   </tile>
   <tile id="901">
