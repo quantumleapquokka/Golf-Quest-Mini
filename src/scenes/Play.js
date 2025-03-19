@@ -49,26 +49,30 @@ class Play extends Phaser.Scene {
         // keyboard input
         this.cursors = this.input.keyboard.createCursorKeys()
         // this.keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC)        // emergency exit
-
+        this.input.keyboard.enabled = false
+        this.time.delayedCall(4000, () => this.input.keyboard.enabled = true)
+        
         // add in sprites and other assets into scene
         this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'battleBg').setOrigin(0.5, 0.5)
         this.windmill = this.add.image(100, 10, 'windmill').setOrigin(0,0).setScale(6)
+        this.ball = this.add.image(800, 520, 'ball').setVisible(false)
         this.aceBattle = this.add.sprite(750, 460, 'aceBattle').setScale(3)
         this.menuBg = this.add.image(165, 520, 'menuBg').setScale(0.5).setVisible(false)
         this.buttonSelect = this.add.image(0, 0, 'selector').setVisible(false)
         this.meterE = this.add.image(140, 550, 'meterE').setScale(3.1).setVisible(false)
         this.meterM = this.add.image(140, 550, 'meterM').setScale(3.1).setVisible(false)
         this.meterD = this.add.image(140, 550, 'meterD').setScale(3.1).setVisible(false)
-       
+
         // health bar filling update
         this.healthBarBackground = this.add.rectangle(670, 105, 300, 20, 0xFFFFFF).setVisible(false)
         this.healthBarFill = this.add.rectangle(670, 105, 300, 20, 0x00ff00).setVisible(false)
         this.windmillHP = this.add.image(670, 85, 'windmillHP').setScale(1.3).setVisible(false)
 
         // par
-        this.parText = this.add.text(game.config.width / 2 + 300, game.config.height / 2, `Current Par: ${this.par}`, {
+        this.parText = this.add.text(game.config.width / 2 + 280, 580, `Current Par: ${this.par}`, {
             fontSize: '25px',
             align: 'center',
+            fontStle: 'bold'
         }).setOrigin(0.5).setVisible(false)
 
         this.parTotal = this.add.image(0, this.game.config.height / 2 + 50, 'par').setScale(3)
@@ -112,24 +116,20 @@ class Play extends Phaser.Scene {
 
 
         // create attacking menu options
-        // Putt button
-        const puttButton = this.add.text(175, 470, 'Putt', {
-            fontSize: '32px',
-            align: 'left'
-        }).setOrigin(0.5).setVisible(false)
-        // Chip button
-        const chipButton = this.add.text(175, 520, 'Chip', {
+        let buttonConfig = {
             fontSize: '32px',
             align: 'left',
-        }).setOrigin(0.5).setVisible(false)
+            fontStyle: 'bold'
+        }
+        // Putt button
+        const puttButton = this.add.text(185, 470, 'Putt', buttonConfig).setOrigin(0.5).setVisible(false)
+        // Chip button
+        const chipButton = this.add.text(185, 520, 'Chip', buttonConfig).setOrigin(0.5).setVisible(false)
         // Drive button
-        const driveButton = this.add.text(175, 570, ' Drive', {
-            fontSize: '32px',
-            align: 'left'
-        }).setOrigin(0.5).setVisible(false)
+        const driveButton = this.add.text(185, 570, ' Drive', buttonConfig).setOrigin(0.5).setVisible(false)
 
 
-        // delay appearance of menu for 2 seconds
+        // delay appearance of menu for 3 seconds
         this.time.delayedCall(3000, () => {
             this.healthBarFill.setVisible(true)
             this.showMenu()
@@ -215,6 +215,7 @@ class Play extends Phaser.Scene {
         } else if (this.gameStarted && this.currentHealth <= 0 && this.par > 7) {
             this.add.text(this.game.config.width / 2, game.config.height / 2, 'YOU LOST,\nOVER PAR\nTRY AGAIN!', {
                 fontSize: '120px',
+                backgroundColor: '#000'
             }).setOrigin(0.5)
             this.events.off(Phaser.Scenes.Events.SHUTDOWN)
             this.par = 0
@@ -232,7 +233,7 @@ class Play extends Phaser.Scene {
 
         const button = this.buttons[index]
 
-        this.buttonSelect.x = 97    //button.x + button.displayWidth * 0.5 - 115
+        this.buttonSelect.x = 100   //button.x + button.displayWidth * 0.5 - 115
         this.buttonSelect.y = button.y
 
         this.selectedButtonIndex = index
@@ -296,12 +297,13 @@ class Play extends Phaser.Scene {
         this.cursors.space.once('down', () => {
             this.stopPointer(club), 
             this.sound.play('hit'),
-            this.time.delayedCall(4000, () => {
-                this.sound.play('health_down')
+            this.time.delayedCall(500, () => {
+                this.launchBallBezier()
             }),
             this.parText.setText('Current Par: ' + this.par) // update par text
         })
     }
+    // stop the pointer and see what level damage
     stopPointer(club) {
         this.currentClub = club
         if(this.isStopped) return
@@ -309,17 +311,26 @@ class Play extends Phaser.Scene {
 
         this.aceBattle.play('swing')
         
+        // calculate to see if the meter stopped in green, yellow, or red and deal damage
         let angle = this.arrow.angle
         if (angle > this.greenRange[0] && angle < this.greenRange[1]) {
             this.successHit(club)
+            this.time.delayedCall(3000, () => {
+                this.sound.play('health_down')
+            })
         } else if (angle > this.yellowRange[0] && angle < this.yellowRange[1]) {
             this.weakHit(club)
+            this.time.delayedCall(4000, () => {
+                this.sound.play('health_down')
+            })
         } else {
             this.failHit()
         }
 
+        
+
         // Hide meter and show menu again
-        this.time.delayedCall(2500, () => {
+        this.time.delayedCall(4500, () => {
             this.arrow.setVisible(false)
             this.meterE.setVisible(false)
             this.meterM.setVisible(false)
@@ -364,7 +375,7 @@ class Play extends Phaser.Scene {
     failHit() {
         console.log("windmill missed")
 
-        // still increment the par
+        // inc health
         this.increaseHealth(10)
     }
 
@@ -384,7 +395,7 @@ class Play extends Phaser.Scene {
     //Health bar stuff
     // update bar width
     updateHealth() {
-        this.time.delayedCall(5000, () => {
+        this.time.delayedCall(4000, () => {
             this.healthBarFill.width = (this.currentHealth / this.maxHealth) * this.healthBarBackground.width
         } )
     }
@@ -400,5 +411,42 @@ class Play extends Phaser.Scene {
         this.currentHealth += amount
         if (this.currentHealth > this.maxHealth) this.currentHealth = this.maxHealth
         this.updateHealth()
+    }
+
+    // Bezier Curve Movement
+    launchBallBezier() {
+        this.ball.setVisible(true)
+        let startX = this.ball.x
+        let startY = this.ball.y
+        let controlX = startX - 700 // Adjust for curvature
+        let controlY = startY - 500 // Make it curve upwards
+        let endX = startX - 500
+        let endY = startY - 250 
+
+        let curve = new Phaser.Curves.QuadraticBezier(
+            new Phaser.Math.Vector2(startX, startY),
+            new Phaser.Math.Vector2(controlX, controlY),
+            new Phaser.Math.Vector2(endX, endY)
+        )
+
+        let duration = 1500 // Adjust speed
+        let t = 0
+        this.time.addEvent({
+            delay: 16, // Approx 60 FPS
+            callback: () => {
+                t += 16 / duration
+                if (t > 1) t = 1
+                let point = curve.getPoint(t)
+                this.ball.setPosition(point.x, point.y)
+            },
+            repeat: duration / 16
+        })
+
+        this.time.delayedCall(2500, ()=> {
+            this.ball.setVisible(false)
+            this.ball.x = 800
+            this.ball.y= 520
+        })
+        
     }
 }
