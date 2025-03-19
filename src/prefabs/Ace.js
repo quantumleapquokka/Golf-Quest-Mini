@@ -45,14 +45,6 @@ class MoveState extends State {
             ace.anims.play("walk", true)
         }
 
-        if(this.cursors.up.isDown) {
-            this.direction.y = -1
-            ace.anims.play("walk-side", true)
-        } else if(this.cursors.down.isDown) {
-            this.direction.y = 1
-            ace.anims.play("walk-side", true)
-        }
-
         direction.normalize();
         ace.setVelocity(ace.VEL * direction.x, ace.VEL * direction.y);
         hero.anims.play(`walk-${hero.direction}`, true)

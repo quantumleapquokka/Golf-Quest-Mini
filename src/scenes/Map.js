@@ -90,10 +90,10 @@ class Map extends Phaser.Scene{
         // handle movements and animation indication for movement
         if(this.cursors.left.isDown) {
             this.direction.x = -1
-            this.ace.direction = 'walk-side'
+            this.ace.direction = 'walk-left'
         } else if(this.cursors.right.isDown) {
             this.direction.x = 1
-            this.ace.direction = 'walk-side'
+            this.ace.direction = 'walk-right'
         }
 
         if(this.cursors.up.isDown) {

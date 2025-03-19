@@ -8,8 +8,8 @@ class Load extends Phaser.Scene {
 
         // load sprites and spritesheets
         this.load.spritesheet('aceMap', 'ace_map_spritesheet.png', {
-            frameWidth: 32,
-            frameHeight: 32
+            frameWidth: 34,
+            frameHeight: 34
         })
         this.load.spritesheet('aceBattle', 'ace_battle_spritesheet.png', {
             frameWidth: 48,
@@ -66,12 +66,22 @@ class Load extends Phaser.Scene {
         })
 
         this.anims.create({
-            key: 'walk-side',
+            key: 'walk-left',
             frameRate: 8,
             repeat: -1,
             frames: this.anims.generateFrameNumbers('aceMap', {
                 start: 2,
                 end: 2,
+            })
+        })
+
+        this.anims.create({
+            key: 'walk-right',
+            frameRate: 8,
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('aceMap', {
+                start: 3,
+                end: 3,
             })
         })
 
